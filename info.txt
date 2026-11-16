@@ -1,0 +1,59 @@
+MISSINGLINK
+
+Project Title: Missing Person Search System
+
+DAY 1 - PROJECT SETUP
+
+Team Member 1: [Your Name]
+Team Member 2: [Teammate Name]
+
+WORK COMPLETED
+
+Member 1:
+- Created the basic dashboard.
+- Added all navigation pages.
+- Added Excel and CSV upload.
+- Connected data loading with the dashboard.
+- Displayed loaded records.
+
+Member 2:
+- Created Excel and CSV loading functions.
+- Created data cleaning functions.
+- Added column validation.
+- Created tests for data loading and cleaning.
+
+WHY STREAMLIT?
+
+Streamlit helps us build a website using Python.
+
+WHY DATA CLEANING?
+
+It makes all records consistent before searching.
+
+WHY LIST AND DICTIONARY?
+
+A dictionary stores one record.
+A list stores all the records.
+
+DATA PRIVACY
+
+Our original newspaper dataset remains private.
+Users can load their own Excel or CSV files.
+
+PLANNED ALGORITHMS
+
+1. Hash Map
+2. Linear Search
+3. Min Heap
+4. Merge Sort
+5. Union-Find
+
+UNIQUE FEATURES
+
+1. Smart Case Link
+2. Smart Search Helper
+3. Bring Your Own Dataset
+
+NEXT STEP
+
+Implement searching and match scoring.
