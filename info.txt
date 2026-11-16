@@ -4,8 +4,8 @@ Project Title: Missing Person Search System
 
 DAY 1 - PROJECT SETUP
 
-Team Member 1: [Your Name]
-Team Member 2: [Teammate Name]
+Team Member 1: Sneha Gautam
+Team Member 2: Tanishka Hira
 
 WORK COMPLETED
 
