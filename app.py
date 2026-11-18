@@ -3,6 +3,11 @@ import streamlit as st
 from data_loader import load_data
 from data_cleaning import clean_records
 from html import escape
+from datetime import date
+from search import make_location_index, find_by_location, linear_search
+from match_score import calculate_score
+from data_cleaning import clean_text
+from check_differences import check_differences
 
 st.set_page_config(
     page_title="MissingLink",
@@ -159,23 +164,6 @@ elif page == "Load Data":
         )
 
 
-    st.title("Load Your Data")
-
-    st.write(
-        "Upload your own missing-person records "
-        "to start searching."
-    )
-
-    st.info(
-        "Your data is processed locally when "
-        "MissingLink runs on your computer."
-    )
-
-    uploaded_file = st.file_uploader(
-        "Choose your dataset",
-        type=["csv", "xlsx"]
-    )
-
     st.subheader("Required Columns")
 
     st.write(
@@ -195,8 +183,170 @@ elif page == "Load Data":
         )
 
 
+
 elif page == "Find Person":
+
     st.title("Find Person")
+
+    records = st.session_state.records
+
+    if not records:
+        st.warning("Please load your dataset first.")
+
+    else:
+        st.write("Enter details to find possible matches.")
+
+        age = st.number_input(
+            "Age",
+            min_value=0,
+            max_value=120,
+            value=None,
+            placeholder="Enter age"
+        )
+
+        gender = st.selectbox(
+            "Gender",
+            ["Unknown", "Male", "Female", "Other"]
+        )
+
+        location = st.text_input(
+            "Missing Location"
+        )
+
+        missing_date = st.date_input(
+            "Missing Since",
+            value=None,
+            max_value=date.today()
+        )
+
+        description = st.text_area(
+            "Description",
+            placeholder="Clothes, height, appearance..."
+        )
+
+        search_type = st.radio(
+            "Search Type",
+            ["All Records", "Same Location"]
+        )
+
+        min_score = st.slider(
+            "Minimum Match Score",
+            min_value=0,
+            max_value=100,
+            value=40
+        )
+
+        if st.button("Find Matches", type="primary"):
+
+            person = {
+                "Age": age,
+                "Gender": (
+                    "" if gender == "Unknown"
+                    else gender.lower()
+                ),
+                "Missing Location": clean_text(location),
+                "Missing Since": missing_date,
+                "Description": clean_text(description)
+            }
+
+            if not any([
+                person["Age"] is not None,
+                person["Gender"],
+                person["Missing Location"],
+                person["Missing Since"] is not None,
+                person["Description"]
+            ]):
+                st.warning("Enter at least one detail.")
+
+            else:
+                if search_type == "Same Location":
+
+                    if not person["Missing Location"]:
+                        st.warning(
+                            "Enter a location for Same Location search."
+                        )
+                        candidates = []
+
+                    else:
+                        index = make_location_index(records)
+
+                        candidates = find_by_location(
+                            index,
+                            person["Missing Location"]
+                        )
+
+                else:
+                    candidates = records
+
+                results = linear_search(
+                    candidates,
+                    person,
+                    calculate_score,
+                    min_score
+                )
+
+                results.sort(
+                    key=lambda item: item["score"],
+                    reverse=True
+                )
+
+                st.session_state.search_results = results
+
+        if "search_results" in st.session_state:
+
+            results = st.session_state.search_results
+
+            st.subheader("Search Results")
+
+            st.write(
+                f"{len(results)} possible matching records found."
+            )
+
+            for item in results[:10]:
+
+                record = item["record"]
+                score = item["score"]
+
+                with st.container(border=True):
+
+                    st.subheader(
+                        f"Case: {record.get('Case ID', 'Unknown')}"
+                    )
+
+                    st.metric("Match Score", f"{score}%")
+
+                    st.write(
+                        "Age:",
+                        record.get("Age", "Unknown")
+                    )
+
+                    st.write(
+                        "Gender:",
+                        record.get("Gender", "Unknown")
+                    )
+
+                    st.write(
+                        "Location:",
+                        record.get("Missing Location", "Unknown")
+                    )
+
+                    st.write(
+                        "Description:",
+                        record.get("Description", "")
+                    )
+
+                    warnings = check_differences(
+                        person,
+                        record
+                    )
+
+                    if warnings:
+                        st.warning(", ".join(warnings))
+
+            st.caption(
+                "These are possible matches, not confirmed identities."
+            )
+
 
 elif page == "Add Record":
     st.title("Add Record")
