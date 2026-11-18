@@ -8,6 +8,8 @@ from search import make_location_index, find_by_location, linear_search
 from match_score import calculate_score
 from data_cleaning import clean_text
 from check_differences import check_differences
+from fast_results import top_matches
+from merge_sort import merge_sort
 
 st.set_page_config(
     page_title="MissingLink",
@@ -229,6 +231,11 @@ elif page == "Find Person":
             ["All Records", "Same Location"]
         )
 
+        result_mode = st.radio(
+            "Results Display",
+            ["Top 10 Matches", "All Sorted Matches"]
+        )
+
         min_score = st.slider(
             "Minimum Match Score",
             min_value=0,
@@ -285,16 +292,26 @@ elif page == "Find Person":
                     min_score
                 )
 
-                results.sort(
-                    key=lambda item: item["score"],
-                    reverse=True
-                )
+                
+                if result_mode == "Top 10 Matches":
+                    ranked_results = top_matches(results, limit=10)
 
-                st.session_state.search_results = results
+                else:
+                    ranked_results = merge_sort(results)
+
+                st.session_state.search_results = ranked_results
+                st.session_state.search_result_mode = result_mode
+
 
         if "search_results" in st.session_state:
 
             results = st.session_state.search_results
+            st.caption(
+                st.session_state.get(
+                    "search_result_mode",
+                    "Top 10 Matches"
+                )
+            )
 
             st.subheader("Search Results")
 
@@ -302,7 +319,7 @@ elif page == "Find Person":
                 f"{len(results)} possible matching records found."
             )
 
-            for item in results[:10]:
+            for item in results:
 
                 record = item["record"]
                 score = item["score"]
@@ -348,8 +365,103 @@ elif page == "Find Person":
             )
 
 
+
 elif page == "Add Record":
-    st.title("Add Record")
+
+    st.title("Add New Record")
+    st.write("Enter details of a missing-person report.")
+
+    with st.form("add_record_form"):
+
+        case_id = st.text_input("Case ID")
+
+        age = st.number_input(
+            "Age",
+            min_value=0,
+            max_value=120,
+            value=None
+        )
+
+        gender = st.selectbox(
+            "Gender",
+            ["Unknown", "Male", "Female", "Other"]
+        )
+
+        location = st.text_input("Missing Location")
+
+        missing_date = st.date_input(
+            "Missing Since",
+            value=None,
+            max_value=date.today()
+        )
+
+        description = st.text_area("Description")
+
+        submitted = st.form_submit_button(
+            "Add Record",
+            type="primary"
+        )
+
+    if submitted:
+
+        case_id = case_id.strip()
+
+        existing_ids = {
+            str(record.get("Case ID", "")).strip().lower()
+            for record in st.session_state.records
+        }
+
+        if not case_id:
+            st.error("Case ID is required.")
+
+        elif case_id.lower() in existing_ids:
+            st.error("This Case ID already exists.")
+
+        elif not location.strip():
+            st.error("Missing Location is required.")
+
+        else:
+
+            new_record = {
+                "Case ID": case_id,
+                "Age": age,
+                "Gender": (
+                    "" if gender == "Unknown"
+                    else gender
+                ),
+                "Missing Location": location,
+                "Missing Since": missing_date,
+                "Description": description
+            }
+
+            cleaned_record = clean_records(
+                [new_record]
+            )[0]
+
+            st.session_state.records.append(
+                cleaned_record
+            )
+
+            st.session_state.pop(
+                "search_results",
+                None
+            )
+
+            st.success(
+                f"Record {case_id} added successfully!"
+            )
+
+    st.metric(
+        "Total Records",
+        len(st.session_state.records)
+    )
+
+    st.info(
+        "Records added here are currently in memory. "
+        "Permanent local saving will be connected "
+        "after the storage branch is merged."
+    )
+
 
 
 elif page == "Saved Records":
