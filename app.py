@@ -1,5 +1,6 @@
 
 import streamlit as st
+from smart_case_page import show_smart_case_page
 from search_helper import suggest_next_detail
 from data_loader import load_data
 from data_cleaning import clean_records
@@ -549,7 +550,7 @@ elif page == "Saved Records":
 
 
 elif page == "Smart Case Link":
-    st.title("Smart Case Link")
+    show_smart_case_page(st.session_state.records)
 
 
 elif page == "Similar Groups":
