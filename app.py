@@ -1,5 +1,6 @@
 
 import streamlit as st
+from search_helper import suggest_next_detail
 from data_loader import load_data
 from data_cleaning import clean_records
 from html import escape
@@ -251,6 +252,14 @@ elif page == "Find Person":
                 "Description": clean_text(description)
             }
 
+            suggestion = suggest_next_detail(
+                person,
+                records
+            )
+
+            st.session_state.search_suggestion = suggestion
+
+
             if not any([
                 person["Age"] is not None,
                 person["Gender"],
@@ -293,6 +302,13 @@ elif page == "Find Person":
                 )
 
                 st.session_state.search_results = results
+        
+        if "search_suggestion" in st.session_state:
+
+            st.info(
+                "Smart Search Helper: "
+                + st.session_state.search_suggestion
+            )
 
         if "search_results" in st.session_state:
 
