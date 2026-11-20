@@ -1,0 +1,213 @@
+MISSINGLINK
+HOW TO USE THE PROJECT
+
+Project:** Missing Person Search System
+
+Developed By:**
+- Sneha Gautam
+- Tanishka Hira
+
+1. Requirements
+
+- Python 3.11 or newer, using a version compatible with the project's dependencies
+- VS Code or another code editor
+- Internet connection for the initial installation
+- A web browser
+
+2. Open the Project
+
+Download or clone the MissingLink GitHub repository.
+
+Open the MissingLink folder in VS Code.
+
+3. Create a Virtual Environment
+
+Open the VS Code terminal.
+
+Windows:
+
+```text
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+Mac:
+
+```text
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+4. Install Required Libraries
+
+Run:
+
+```text
+python -m pip install -r requirements.txt
+```
+
+5. Run the Application
+
+Run:
+
+```text
+python -m streamlit run app.py
+```
+
+Streamlit will display a local URL, usually:
+
+```text
+http://localhost:8501
+```
+
+Open the URL in your browser.
+
+6. Prepare a Dataset
+
+The dataset must be an Excel (.xlsx) or CSV (.csv) file.
+
+Required columns:
+
+1. Case ID
+2. Age
+3. Gender
+4. Missing Location
+5. Missing Since
+6. Description
+
+Use fictional records when demonstrating the project.
+
+7. Load Data
+
+1. Select "Load Data" from the sidebar.
+2. Choose an Excel or CSV file.
+3. Click "Load Records".
+4. Check the success message.
+5. Return to Home to view the dataset statistics.
+
+8. Find Person
+
+1. Select "Find Person".
+2. Enter available details such as age, gender, location, date and description.
+3. Select the search type.
+4. Choose the minimum match score.
+5. Select "Top 10 Matches" or "All Sorted Matches".
+6. Click "Find Matches".
+7. Review the results and similarity scores.
+
+Higher scores suggest stronger similarity under the system's rules. They do not confirm identity.
+
+9. Smart Search Helper
+
+When important search fields are missing, the system suggests a detail that may help improve the search.
+
+The suggestions follow predefined rules.
+
+10. Smart Case Link
+
+1. Select "Smart Case Link".
+2. Choose an existing case.
+3. Set the minimum link score.
+4. Click "Find Possible Links".
+5. Review possible connections between records from different locations.
+
+All links require human verification.
+
+11. Similar Groups
+
+1. Select "Similar Groups".
+2. Choose the minimum group score.
+3. Click "Find Similar Groups".
+4. Expand a group to see related records.
+
+Union-Find is used to combine potentially linked records into groups.
+
+Groups do not prove that records describe the same person.
+
+12. Add Record
+
+1. Select "Add Record".
+2. Enter a unique Case ID.
+3. Fill in the available details.
+4. Click "Add Record".
+5. Check the success message.
+
+The system rejects duplicate Case IDs.
+
+13. Save Records
+
+1. Open "Saved Records".
+2. Click "Save Working Copy".
+3. Records are saved to a local CSV file.
+
+To reload the data:
+
+1. Open "Saved Records".
+2. Click "Load Saved Copy".
+3. Check that the saved records are displayed.
+
+Saving a working copy does not overwrite the originally uploaded file.
+
+14. Run Unit Tests
+
+In the terminal, run:
+
+```text
+python -m unittest discover -p "test_*.py" -v
+```
+
+A successful test run finishes with "OK".
+
+15. Run Performance Benchmarks
+
+Run:
+
+```text
+python benchmark.py
+python benchmark_worst_case.py
+python benchmark_graph.py
+```
+
+The last command generates the performance graph.
+
+Benchmarks use synthetic data and measure core Python processing time.
+
+16. Stop the Application
+
+Press `Ctrl + C` in the terminal running Streamlit.
+
+17. Privacy and Limitations
+
+- Do not publish confidential missing-person datasets.
+- Use fictional records for demonstrations.
+- The system provides possible matches, not verified identities.
+- Locally saved records remain on the machine where the application runs.
+- Only authorized users should access sensitive datasets.
+
+18. Troubleshooting
+
+Problem: A Python module is missing.**
+
+Solution: Activate the virtual environment and reinstall the requirements.
+
+Problem: The dataset cannot be loaded.**
+
+Solution: Check the file format and required column names.
+
+Problem: No search results appear.**
+
+Solution: Check whether records are loaded, review entered details and adjust the minimum score.
+
+Problem: New records disappear after restarting.**
+
+Solution: Use "Save Working Copy" before closing the application, then "Load Saved Copy" after restarting.
+
+Problem: Port 8501 is already in use.**
+
+Solution: Stop the previous Streamlit process or use another available port.
+
+19. Conclusion
+
+MissingLink is a DSA-based application that supports record searching, similarity ranking, possible case linking, grouping and local data storage.
+
+It is intended as a project demonstration and decision-support tool. Human verification remains necessary.
