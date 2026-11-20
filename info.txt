@@ -1,59 +1,220 @@
-MISSINGLINK
+# MISSINGLINK
 
-Project Title: Missing Person Search System
+**Project Title:** Missing Person Search System
 
-DAY 1 - PROJECT SETUP
+**Team Member 1:** Sneha Gautam  
+**Team Member 2:** Tanishka Hira
 
-Team Member 1: Sneha Gautam
-Team Member 2: Tanishka Hira
+## PROJECT OVERVIEW
 
-WORK COMPLETED
+MissingLink is a missing-person record search system developed using Python, Streamlit and Data Structures and Algorithms.
 
-Member 1:
-- Created the basic dashboard.
-- Added all navigation pages.
-- Added Excel and CSV upload.
-- Connected data loading with the dashboard.
+Users can upload Excel or CSV datasets, search for similar records, add new records and explore possible connections between reports.
+
+The system suggests possible matches. It does not confirm a person's identity.
+
+## DAY 1 - PROJECT SETUP
+
+**Member 1:**
+- Created the basic Streamlit dashboard.
+- Added navigation pages.
+- Added dataset upload to the dashboard.
 - Displayed loaded records.
 
-Member 2:
-- Created Excel and CSV loading functions.
+**Member 2:**
+- Created CSV and Excel loading functions.
 - Created data cleaning functions.
 - Added column validation.
-- Created tests for data loading and cleaning.
+- Created unit tests.
 
-WHY STREAMLIT?
+**Why Streamlit?**
 
-Streamlit helps us build a website using Python.
+Streamlit helps us create a web application using Python.
 
-WHY DATA CLEANING?
+**Why Data Cleaning?**
 
-It makes all records consistent before searching.
+It converts information into a consistent format before searching.
 
-WHY LIST AND DICTIONARY?
+**Why Lists and Dictionaries?**
 
-A dictionary stores one record.
-A list stores all the records.
+A dictionary stores the details of one record. A list stores multiple records.
 
-DATA PRIVACY
+## DAY 2 - SEARCH AND MATCHING
 
-Our original newspaper dataset remains private.
-Users can load their own Excel or CSV files.
+**Member 1:**
+- Implemented Hash Map for location-based searching.
+- Implemented Linear Search.
+- Connected search functionality to the dashboard.
 
-PLANNED ALGORITHMS
+**Member 2:**
+- Created weighted Match Score.
+- Implemented description word matching.
+- Added difference checking.
+- Tested the matching functions.
 
-1. Hash Map
-2. Linear Search
-3. Min Heap
-4. Merge Sort
-5. Union-Find
+**Why Hash Map?**
 
-UNIQUE FEATURES
+It helps us quickly find records from a selected location.
 
-1. Smart Case Link
-2. Smart Search Helper
-3. Bring Your Own Dataset
+**Why Linear Search?**
 
-NEXT STEP
+It compares candidate records one by one.
 
-Implement searching and match scoring.
+**What is Match Score?**
+
+It is a rule-based similarity score using age, gender, location, missing date and description.
+
+The score is not a probability of identity.
+
+## DAY 3 - SORTING, GROUPING AND STORAGE
+
+**Member 1:**
+- Implemented Min Heap for Top 10 results.
+- Implemented Merge Sort for all sorted results.
+- Connected sorting to Find Person.
+- Created the Add Record form.
+
+**Member 2:**
+- Implemented Union-Find.
+- Created possible related record grouping.
+- Created CSV record storage.
+- Added storage tests.
+
+**Why Min Heap?**
+
+It efficiently keeps the highest-scoring 10 matches.
+
+**Why Merge Sort?**
+
+It sorts all matching records efficiently, including large result lists.
+
+**Why Union-Find?**
+
+It joins potentially related records into groups.
+
+These groups are suggestions and may contain indirect links.
+
+**Why Local Storage?**
+
+It allows records to be saved and loaded again after restarting the application.
+
+## DAY 4 - UNIQUE FEATURES
+
+**Member 1:**
+- Developed Smart Search Helper.
+- Connected suggestions to Find Person.
+- Integrated Smart Case Link into the dashboard.
+
+**Member 2:**
+- Developed Smart Case Link.
+- Implemented cross-location comparison.
+- Created the Smart Case Link page.
+- Added tests.
+
+**Smart Search Helper**
+
+Suggests missing information that users can enter to improve their search.
+
+The current implementation uses fixed priority rules.
+
+**Smart Case Link**
+
+Checks records from different locations and suggests possible connections using Match Score and difference checking.
+
+**Bring Your Own Dataset**
+
+Users can upload their own Excel or CSV files without modifying the project code.
+
+## DAY 5 - UI AND PERFORMANCE TESTING
+
+**Member 1:**
+- Improved dashboard styling.
+- Added colorful metric cards.
+- Added dataset insights and charts.
+- Improved the search-result display.
+- Tested the main dashboard features.
+
+**Member 2:**
+- Created performance benchmarks.
+- Tested different synthetic dataset sizes.
+- Tested a difficult same-location search scenario.
+- Generated a performance graph.
+
+**Testing Results**
+
+The project completed 46 Python unit tests successfully during final testing.
+
+Core algorithm execution times were measured using Python's `perf_counter()`.
+
+The benchmarks do not include complete browser rendering time.
+
+## DATA STRUCTURES AND ALGORITHMS
+
+| Algorithm | Purpose |
+|---|---|
+| Hash Map | Location-based record lookup |
+| Linear Search | Compare selected records |
+| Min Heap | Select Top 10 matches |
+| Merge Sort | Sort all matching records |
+| Union-Find | Create possible related groups |
+
+## TIME COMPLEXITY
+
+- Hash Map construction: O(n)
+- Hash Map lookup: O(1) average for accessing a location's list, excluding the cost of processing its records
+- Linear Search: O(n) record checks, assuming bounded comparison work
+- Min Heap: O(n log k) for selecting Top k
+- Merge Sort: O(n log n)
+- Union-Find: Nearly O(1) amortized per operation using path compression and union by rank
+
+The complete search time also depends on the number of candidate records and the amount of information being compared.
+
+## DATA PRIVACY
+
+- The original newspaper dataset is kept private.
+- Real records are not included in the public repository.
+- Fictional records are used for demonstrations and tests.
+- Users can upload their own CSV or Excel datasets.
+- Local saved copies are stored on the computer running the application.
+- Possible matches must be verified by humans.
+
+## GITHUB COLLABORATION
+
+Both team members worked using separate Git branches.
+
+We used commits, Pull Requests, code reviews and merges to combine our work.
+
+This helped us track individual contributions and maintain the project.
+
+## PROJECT LIMITATIONS
+
+- Similarity scores are based on manually selected rules.
+- Matching details do not prove that two reports belong to the same person.
+- Missing or incorrect information can affect results.
+- Union-Find groups may include indirectly connected reports.
+- Performance depends on dataset size, record content and hardware.
+
+## FINAL PROJECT FEATURES
+
+1. Excel and CSV upload
+2. Data cleaning and validation
+3. Find Person search
+4. Top 10 matching records
+5. All sorted results
+6. Smart Search Helper
+7. Smart Case Link
+8. Similar Groups
+9. Add Record with duplicate Case ID checking
+10. Local Save and Load
+11. Dashboard charts and statistics
+12. Algorithm testing and performance analysis
+
+## CONCLUSION
+
+MissingLink demonstrates how Data Structures and Algorithms can help organize, search and compare missing-person reports.
+
+The system focuses on efficient searching, possible record connections, data privacy and human verification.
+
+## NEXT STEP
+
+Complete the final project report, presentation, screenshots and viva preparation.
